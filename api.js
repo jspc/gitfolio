@@ -17,6 +17,8 @@ async function getRepos(username, opts = {}) {
     const sort = opts.sort;
     const order = opts.order || (sort === "full_name" ? "asc" : "desc");
     const types = opts.types || [];
+    const repositories = opts.repositories;
+
     let type = "all";
 
     if (
@@ -36,8 +38,8 @@ async function getRepos(username, opts = {}) {
         tempRepos = await got(requestUrl);
         tempRepos = JSON.parse(tempRepos.body);
 
-        if (opts.repositories.length > 0) {
-            tempRepos.filter(function(r) opts.repositories.includes(r.name) || opts.repositories.includes(r.full_name));
+        if (repositories.length > 0) {
+            tempRepos = tempRepos.filter(r => (repositories.includes(r.name) || repositories.includes(r.full_name)));
         }
 
         repos = repos.concat(tempRepos);

@@ -9,15 +9,32 @@ const got = require("got");
  * @param {'created' | 'updated' | 'pushed' | 'full_name' | 'star'} [opts.sort]
  * @param {'desc' | 'asc'} [opts.order]
  */
-async function getRepos(username, opts = {}) {
-    let tempRepos;
-    let page = 1;
-    let repos = [];
+async function getRepos(user, opts = {}) {
+    const sort = opts.sort;
+    const repositories = opts.repositories;
 
+    var repos = await repoLoop(genUrl(user.repos_url, opts), repositories, sort);
+    if (opts.orgs) {
+        console.log("orgs lookup");
+
+        orgs = await got(user.organizations_url);
+        orgs = JSON.parse(orgs.body);
+
+        for (var i = 0; i < orgs.length; i++) {
+            orgRepos = await repoLoop(genUrl(orgs[i].repos_url, opts), repositories, sort);
+            repos = repos.concat(orgRepos);
+        }
+    }
+
+    console.log(repos);
+
+    return repos;
+}
+
+function genUrl(urlBase, opts) {
     const sort = opts.sort;
     const order = opts.order || (sort === "full_name" ? "asc" : "desc");
     const types = opts.types || [];
-    const repositories = opts.repositories;
 
     let type = "all";
 
@@ -30,19 +47,30 @@ async function getRepos(username, opts = {}) {
         type = "member";
     }
 
+    let u = `${urlBase}?per_page=100&type=${type}`;
+    if (sort && sort !== "star") {
+        u += `&sort=${sort}&direction=${order}`;
+    }
+
+    return u;
+}
+
+async function repoLoop(urlBase, repositories, sort) {
+    let tempRepos = [];
+    let page = 1;
+    let repos = [];
+
     do {
-        let requestUrl = `https://api.github.com/users/${username}/repos?per_page=100&page=${page++}&type=${type}`;
-        if (sort && sort !== "star") {
-            requestUrl += `&sort=${sort}&direction=${order}`;
-        }
+        let requestUrl = `${urlBase}&page=${page++}`;
+
         tempRepos = await got(requestUrl);
         tempRepos = JSON.parse(tempRepos.body);
 
-        if (repositories.length > 0) {
-            tempRepos = tempRepos.filter(r => (repositories.includes(r.name) || repositories.includes(r.full_name)));
+        if (repositories && repositories.length > 0) {
+            repos = repos.concat(tempRepos.filter(r => (repositories.includes(r.name) || repositories.includes(r.full_name))));
+        } else {
+            repos = repos.concat(tempRepos);
         }
-
-        repos = repos.concat(tempRepos);
     } while (tempRepos.length == 100);
 
     if (sort == "star") {

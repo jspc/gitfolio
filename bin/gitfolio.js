@@ -30,6 +30,8 @@ program
     .option("-m, --medium [username]", "specify medium username")
     .option("-d, --dribbble [username]", "specify dribbble username")
     .option("-r, --repos [repo1,repo2]", "only include comma separated list of repositories")
+    .option("-c, --cv [url]", "link to cv to include")
+    .option("-i, --include-orgs", "include orgs when finding repos")
     .action(buildCommand);
 
 program

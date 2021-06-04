@@ -8,7 +8,7 @@ const hbs = require("handlebars");
 /*  Creates promise-returning async functions
     from callback-passed async functions      */
 const fs = bluebird.promisifyAll(require("fs"));
-const { updateHTML } = require("./populate");
+const { populate } = require("./populate");
 const { getConfig, outDir } = require("./utils");
 
 const assetDir = path.resolve(`${__dirname}/assets/`);
@@ -25,7 +25,7 @@ async function populateCSS({
     background = "https://images.unsplash.com/photo-1553748024-d1b27fb3f960?w=1500&q=80"
 } = {}) {
     /* Get the theme the user requests. Defaults to 'light' */
-    theme = `${theme}.css`;
+    //theme = ;
     let template = path.resolve(assetDir, "index.css");
     let stylesheet = path.join(outDir, "index.css");
 
@@ -40,12 +40,12 @@ async function populateCSS({
     /* Get an array of every available theme */
     let themes = await fs.readdirAsync(path.join(assetDir, "themes"));
 
-    if (!themes.includes(theme)) {
+    if (!themes.includes(`${theme}.css`)) {
         console.error('Error: Requested theme not found. Defaulting to "light".');
         theme = "light";
     }
     /* Read in the theme stylesheet */
-    let themeSource = await fs.readFileSync(path.join(assetDir, "themes", theme));
+    let themeSource = await fs.readFileSync(path.join(assetDir, "themes", `${theme}.css`));
     themeSource = themeSource.toString("utf-8");
     let themeTemplate = hbs.compile(themeSource);
     let styles = themeTemplate({
@@ -74,20 +74,25 @@ async function buildCommand(username, program) {
     } else {
         types = program.include;
     }
+
     const opts = {
         sort: program.sort,
         order: program.order,
         includeFork: program.fork ? true : false,
         types,
-        twitter: program.twitter,
-        linkedin: program.linkedin,
-        medium: program.medium,
-        dribbble: program.dribbble,
-        repositories: program.repos ? program.repos.split(',') : []
+        socials: {
+            twitter: program.twitter,
+            linkedin: program.linkedin,
+            medium: program.medium,
+            dribbble: program.dribbble
+        },
+        repositories: program.repos ? program.repos.split(',') : [],
+        cv: program.cv,
+        orgs: program.includeOrgs ? true : false
     };
 
     await populateConfig(opts);
-    updateHTML(("%s", username), opts);
+    populate(("%s", username), opts);
 }
 
 module.exports = {

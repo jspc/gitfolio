@@ -1,22 +1,22 @@
 {
-  "name": "gitfolio",
-  "version": "0.1.5",
-  "description": "a portfolio website for everyone to showcase their work",
+  "name": "@jspc/gitfolio",
+  "version": "0.2.0",
+  "description": "A portfolio website for everyone to showcase their work, forked from the original",
   "main": "build.js",
-  "bin": "bin/gitfolio.js",
+  "bin": {
+    "gitfolio": "bin/gitfolio.js"
+  },
   "scripts": {
     "cli": "OUT_DIR='./dist' node bin/gitfolio.js",
     "clean": "rm -rf ./dist/*",
     "prettier": "prettier --write \"./**/*.{js,jsx,json,html,css,md}\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": {
-    "name": "@imfunniee and community",
-    "email": "imfunny@wybemf.com",
-    "url": "https://imfunniee.github.io"
+  "author": "@jspc, forked fron @imfunniee and community (https://jspc.github.io)",
+  "bugs": {
+    "url": "https://github.com/jspc/gitfolio/issues"
   },
-  "bugs": "https://github.com/imfunniee/gitfolio/issues",
-  "homepage": "https://github.com/imfunniee/gitfolio",
+  "homepage": "https://github.com/jspc/gitfolio",
   "keywords": [
     "personal-website",
     "github",
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/imfunniee/gitfolio"
+    "url": "git+https://github.com/jspc/gitfolio.git"
   },
   "license": "GPL-3.0",
   "dependencies": {
@@ -44,5 +44,6 @@
     "jsdom": "^16.6.0",
     "ncp": "^2.0.0",
     "prettier": "^1.18.2"
-  }
+  },
+  "devDependencies": {}
 }

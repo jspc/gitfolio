@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 /* Argument parser */
 const program = require("commander");
 
@@ -29,6 +29,7 @@ program
   .option("-l, --linkedin [username]", "specify linkedin username")
   .option("-m, --medium [username]", "specify medium username")
   .option("-d, --dribbble [username]", "specify dribbble username")
+  .option("-r, --repos [repo1,repo2]" "only include comma separated list of repositories")
   .action(buildCommand);
 
 program

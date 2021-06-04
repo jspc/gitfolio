@@ -83,7 +83,7 @@ async function buildCommand(username, program) {
         linkedin: program.linkedin,
         medium: program.medium,
         dribbble: program.dribbble,
-        repositories: program.repos.split(',')
+        repositories: program.repos ? program.repos.split(',') : []
     };
 
     await populateConfig(opts);

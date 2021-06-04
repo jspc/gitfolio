@@ -15,8 +15,6 @@ async function getRepos(user, opts = {}) {
 
     var repos = await repoLoop(genUrl(user.repos_url, opts), repositories, sort);
     if (opts.orgs) {
-        console.log("orgs lookup");
-
         orgs = await got(user.organizations_url);
         orgs = JSON.parse(orgs.body);
 
@@ -25,8 +23,6 @@ async function getRepos(user, opts = {}) {
             repos = repos.concat(orgRepos);
         }
     }
-
-    console.log(repos);
 
     return repos;
 }

@@ -18,8 +18,6 @@ async function buildHomePage(user, config, opts) {
 
             const repos = await getRepos(user, opts);
 
-            console.log('running <3');
-
             for (var i = 0; i < repos.length; i++) {
                 let element;
 

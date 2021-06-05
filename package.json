@@ -1,6 +1,6 @@
 {
   "name": "@jspc/gitfolio",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A portfolio website for everyone to showcase their work, forked from the original",
   "main": "build.js",
   "bin": {
@@ -46,6 +46,7 @@
     "prettier": "^1.18.2"
   },
   "devDependencies": {
+    "eslint": "^7.28.0",
     "jest": "^27.0.4"
   }
 }

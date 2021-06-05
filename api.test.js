@@ -19,7 +19,7 @@ it('sorts repos by date correctly', () => {
     });
 
     expect.assertions(1);
-    return getRepos("test", {order: "desc", sort: "created_at", orgs: true}).then(repos => expect(repos).toStrictEqual(
+    return getRepos("test", {order: "asc", sort: "created_at", orgs: true}).then(repos => expect(repos).toStrictEqual(
         [
             {full_name: "test/test-5", created_at: "2015-12-22T17:06:38Z"},
             {full_name: "test/test-2", created_at: "2016-12-06T17:31:41Z"},

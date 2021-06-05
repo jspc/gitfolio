@@ -14,13 +14,14 @@ async function getRepos(user, opts = {}) {
     const order = opts.order;
     const repositories = opts.repositories;
 
-    var repos = await repoLoop(genUrl(user.repos_url, opts), repositories, sort);
+    var repos = await repoLoop(genUrl(user.repos_url, opts), repositories);
     if (opts.orgs) {
-        orgs = await got(user.organizations_url);
+        let orgs = await got(user.organizations_url);
         orgs = JSON.parse(orgs.body);
 
+        let orgRepos;
         for (var i = 0; i < orgs.length; i++) {
-            orgRepos = await repoLoop(genUrl(orgs[i].repos_url, opts), repositories, sort);
+            orgRepos = await repoLoop(genUrl(orgs[i].repos_url, opts), repositories);
             repos = repos.concat(orgRepos);
         }
     }
@@ -35,9 +36,9 @@ async function getRepos(user, opts = {}) {
         if (aMetric === bMetric) { return 0 }
 
         if (order == "desc") {
-            return aMetric > bMetric ? 1 : -1;
-        } else {
             return aMetric < bMetric ? 1 : -1;
+        } else {
+            return aMetric > bMetric ? 1 : -1;
         }
     });
 
@@ -48,21 +49,17 @@ function sortValue(repo, sort) {
     switch(sort) {
     case "star":
         return repo.stargzers_count;
-        break;
 
     case "full_name":
     case "name":
         return repo.full_name;
-        break;
 
     case "updated_at":
     case "updated":
         return Date.parse(repo.updated_at);
-        break;
 
     case "pushed_at":
         return Date.parse(repo.pushed_at);
-        break
     }
 
     return Date.parse(repo.created_at);
@@ -92,7 +89,7 @@ function genUrl(urlBase, opts) {
     return u;
 }
 
-async function repoLoop(urlBase, repositories, sort) {
+async function repoLoop(urlBase, repositories) {
     let tempRepos = [];
     let page = 1;
     let repos = [];

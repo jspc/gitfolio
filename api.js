@@ -11,6 +11,7 @@ const got = require("got");
  */
 async function getRepos(user, opts = {}) {
     const sort = opts.sort;
+    const order = opts.order;
     const repositories = opts.repositories;
 
     var repos = await repoLoop(genUrl(user.repos_url, opts), repositories, sort);
@@ -24,7 +25,43 @@ async function getRepos(user, opts = {}) {
         }
     }
 
+    let names = repos.map(o => o.full_name)
+    repos = repos.filter(({full_name}, index) => !names.includes(full_name, index + 1))
+
+    repos = repos.sort(function(a, b) {
+        let aMetric = sortValue(a, sort);
+        let bMetric = sortValue(b, sort);
+
+        if (aMetric === bMetric) { return 0 }
+
+        if (order == "desc") {
+            return aMetric > bMetric ? 1 : -1;
+        } else {
+            return aMetric < bMetric ? 1 : -1;
+        }
+    });
+
     return repos;
+}
+
+function sortValue(repo, sort) {
+    switch(sort) {
+    case "star":
+        return repo.stargzers_count;
+        break;
+
+    case "full_name":
+    case "name":
+        return repo.full_name;
+        break;
+
+    case "updated_at":
+    case "updated":
+        return Date.parse(repo.updated_at);
+        break;
+    }
+
+    return Date.parse(repo.created_at);
 }
 
 function genUrl(urlBase, opts) {
@@ -68,16 +105,6 @@ async function repoLoop(urlBase, repositories, sort) {
             repos = repos.concat(tempRepos);
         }
     } while (tempRepos.length == 100);
-
-    if (sort == "star") {
-        repos = repos.sort(function(a, b) {
-            if (order == "desc") {
-                return b.stargazers_count - a.stargazers_count;
-            } else {
-                return a.stargazers_count - b.stargazers_count;
-            }
-        });
-    }
 
     return repos;
 }

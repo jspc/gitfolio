@@ -1,6 +1,6 @@
 {
   "name": "@jspc/gitfolio",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A portfolio website for everyone to showcase their work, forked from the original",
   "main": "build.js",
   "bin": {
@@ -10,7 +10,7 @@
     "cli": "OUT_DIR='./dist' node bin/gitfolio.js",
     "clean": "rm -rf ./dist/*",
     "prettier": "prettier --write \"./**/*.{js,jsx,json,html,css,md}\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "@jspc, forked fron @imfunniee and community (https://jspc.github.io)",
   "bugs": {
@@ -35,7 +35,7 @@
   "dependencies": {
     "bluebird": "^3.5.4",
     "body-parser": "^1.19.0",
-    "commander": "^2.20.0",
+    "commander": "^2.20.3",
     "ejs": "^2.6.2",
     "express": "^4.17.0",
     "github-emoji": "^1.1.1",
@@ -45,5 +45,7 @@
     "ncp": "^2.0.0",
     "prettier": "^1.18.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^27.0.4"
+  }
 }

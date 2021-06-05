@@ -59,6 +59,10 @@ function sortValue(repo, sort) {
     case "updated":
         return Date.parse(repo.updated_at);
         break;
+
+    case "pushed_at":
+        return Date.parse(repo.pushed_at);
+        break
     }
 
     return Date.parse(repo.created_at);

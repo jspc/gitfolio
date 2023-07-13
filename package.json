@@ -1,6 +1,6 @@
 {
   "name": "@jspc/gitfolio",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A portfolio website for everyone to showcase their work, forked from the original",
   "main": "build.js",
   "bin": {

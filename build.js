@@ -88,7 +88,8 @@ async function buildCommand(username, program) {
         },
         repositories: program.repos ? program.repos.split(',') : [],
         cv: program.cv,
-        orgs: program.includeOrgs ? true : false
+        orgs: program.includeOrgs ? true : false,
+        fediverse: program.fediverse
     };
 
     await populateConfig(opts);

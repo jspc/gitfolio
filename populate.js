@@ -59,8 +59,9 @@ async function buildHomePage(user, config, opts) {
                         </section>
                         </a>`;
             }
+
             document.title = user.login;
-            document = setUserSection(document, user, opts.socials, opts.cv);
+            document = setUserSection(document, user, opts.socials, opts.cv, opts.fediverse);
 
             await fs.writeFile(
                 `${outDir}/index.html`,
@@ -137,7 +138,7 @@ module.exports = {
     populate
 };
 
-function setUserSection(document, user, socials, cv) {
+function setUserSection(document, user, socials, cv, fedi) {
     var icon = document.createElement("link");
     icon.setAttribute("rel", "icon");
     icon.setAttribute("href", user.avatar_url);
@@ -160,6 +161,11 @@ function setUserSection(document, user, socials, cv) {
 
     document.getElementById("userbio").style.display =
         user.bio == null || !user.bio ? "none" : "block";
+
+    document.getElementById("footer").innerHtml = `
+<a href="https://github.com/jspc" target="_blank">made on earth by a human</a>
+<a style="display:none" rel="me" href="${fedi}"></a>
+`;
 
     document.getElementById("about").innerHTML = `
 <span style="display:${user.company == null || !user.company ? "none" : "block"};">

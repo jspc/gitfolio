@@ -18,7 +18,7 @@ function collect(val, memo) {
 program
     .command("build <username>")
     .description(
-        "Build site with your GitHub username. This will be used to customize your site"
+        "Build site with your GitHub username. This will be used to customise your site"
     )
     .option("-t, --theme [theme]", "specify a theme to use", "light")
     .option("-b, --background [background]", "set the background image")
@@ -32,6 +32,7 @@ program
     .option("-r, --repos [repo1,repo2]", "only include comma separated list of repositories")
     .option("-c, --cv [url]", "link to cv to include")
     .option("-i, --include-orgs", "include orgs when finding repos")
+    .option("-f, --fediverse", "specify fediverse username")
     .action(buildCommand);
 
 program
